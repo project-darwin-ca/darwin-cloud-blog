@@ -3,7 +3,7 @@ const siteMetadata = {
   title: 'Darwin Blog',
   author: 'Darwin',
   headerTitle: 'TailwindBlog',
-  description: 'A blog created with Next.js and Tailwind.css',
+  description: 'Explore how Schrödinger leverages advanced computational methods, including Density Functional Theory (DFT), for cutting-edge molecular and material modeling.',
   language: 'en-us',
   theme: 'system', // system, dark or light
   siteUrl: 'https://tailwind-nextjs-starter-blog.vercel.app',
