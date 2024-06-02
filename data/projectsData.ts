@@ -7,21 +7,18 @@ interface Project {
 
 const projectsData: Project[] = [
   {
-    title: 'A Search Engine',
-    description: `What if you could look up any information in the world? Webpages, images, videos
-    and more. Google has many features to help you find exactly what you're looking
-    for.`,
-    imgSrc: '/static/images/google.png',
+    title: 'Polymer Design',
+    description: `Using Darwin, researchers can design and optimize new polymers with desired mechanical, thermal, and chemical properties. By simulating polymer behavior at the molecular level, Darwin aids in predicting performance and identifying promising candidates for various applications.`,
+    imgSrc: '/static/images/polymer-design.png',
     href: 'https://www.google.com',
   },
   {
-    title: 'The Time Machine',
-    description: `Imagine being able to travel back in time or to the future. Simple turn the knob
-    to the desired date and press "Go". No more worrying about lost keys or
-    forgotten headphones with this simple yet affordable solution.`,
-    imgSrc: '/static/images/time-machine.jpg',
+    title: 'Battery Materials Innovation',
+    description: `Darwin's platform enables the development of advanced battery materials by simulating electrochemical properties and stability. This accelerates the discovery of materials with higher energy densities and longer lifespans, crucial for next-generation batteries in electric vehicles and renewable energy storage.`,
+    imgSrc: '/static/images/battery-materials.png',
     href: '/blog/the-time-machine',
   },
 ]
 
 export default projectsData
+
