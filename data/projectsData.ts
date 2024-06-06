@@ -18,6 +18,12 @@ const projectsData: Project[] = [
     imgSrc: '/static/images/battery-design.webp',
     href: '/blog/the-time-machine',
   },
+  {
+    title: 'Forensic Identification',
+    description: `Darwin's platform, in combination with NMR Spectroscopy, plays a critical role in forensic science for the identification of unknown chemical compounds. By offering detailed molecular simulations and precise analysis, Darwin enhances the accuracy and efficiency of forensic investigations, aiding in the swift identification of substances in criminal cases and toxicology studies.`,
+    imgSrc: '/static/images/forensic-identification.webp',
+    href: '/blog/the-time-machine',
+  },
 ]
 
 export default projectsData
