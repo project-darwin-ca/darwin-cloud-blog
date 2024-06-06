@@ -24,6 +24,12 @@ const projectsData: Project[] = [
     imgSrc: '/static/images/forensic_identification.jpeg',
     href: '/blog/the-time-machine',
   },
+  {
+    title: 'Drug Discovery and Development',
+    description: `Leveraging Darwin's advanced computational chemistry capabilities, researchers can accelerate drug discovery and development. By simulating drug-target interactions at the molecular level, Darwin aids in identifying potential drug candidates, optimizing lead compounds, and predicting pharmacokinetic and toxicological properties, thus streamlining the drug development process.`,
+    imgSrc: '/static/images/psivant.webp',
+    href: '/blog/the-time-machine',
+  },
 ]
 
 export default projectsData
