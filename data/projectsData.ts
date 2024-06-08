@@ -19,7 +19,7 @@ const projectsData: Project[] = [
     href: '/blog/the-time-machine',
   },
   {
-    title: 'Battery Materials Innovation',
+    title: 'Battery Materials Design',
     description: `Darwin's platform enables the development of advanced battery materials by simulating electrochemical properties and stability. This accelerates the discovery of materials with higher energy densities and longer lifespans, crucial for next-generation batteries in electric vehicles and renewable energy storage.`,
     imgSrc: '/static/images/battery-design.webp',
     href: '/blog/the-time-machine',
