@@ -10,7 +10,7 @@ const projectsData: Project[] = [
     title: 'Polymer Design',
     description: `Using Darwin, researchers can design and optimize new polymers with desired mechanical, thermal, and chemical properties. By simulating polymer behavior at the molecular level, Darwin aids in predicting performance and identifying promising candidates for various applications.`,
     imgSrc: '/static/images/polymerdesign.webp',
-    href: '/blog/the-time-machine',
+    href: '',
   },
   {
     title: 'Drug Discovery and Development',
