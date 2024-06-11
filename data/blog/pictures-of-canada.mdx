@@ -1,52 +1,143 @@
 ---
-title: Darwin Collaborates With AWS to Harness NVIDIA GPUs for Building Protein Interaction Foundation Models
+title: Density Functional Theory (DFT) Functions Explained
 date: '2024-04-04'
-tags: ['foundation models', 'cloud computing', 'protein design']
+tags: ['molecular-simulation', 'theory']
 draft: false
-layout:
-images:
-summary: NEW YORK--(BUSINESS WIRE)--Darwin, a pioneer in generative AI-enabled drug discovery, is working with AWS to power large scale distributed training and further improve internal operations. This collaboration is set to provide Darwin with NVIDIA H100 GPUs, a move that Darwin believes will help accelerate the training of geometric foundation models for making protein-protein interactions programmable.
+summary: 'Understanding the application of Density Functional Theory (DFT) in Darwin software for accurate molecular and material modeling.'
 ---
 
-NEW YORK--(BUSINESS WIRE)--Darwin, a pioneer in generative AI-enabled drug discovery, is working with AWS to power large scale distributed training and further improve internal operations. This collaboration is set to provide Darwin with NVIDIA H100 GPUs, a move that Darwin believes will help accelerate the training of geometric foundation models for making protein-protein interactions programmable.
+# Introduction
 
-### Nextflow: A Game Changer in Genomics
-- What is Nextflow?
-- Benefits of Using Nextflow in Genomic Research
+Parsing and display of math equations is included in this blog template. Parsing of math is enabled by `remark-math` and `rehype-katex`.
+KaTeX and its associated font is included in `_document.js` so feel free to use it on any page.
+[^footnote]
 
-### The Role of GPU Acceleration
-- How GPUs Accelerate Genomics Workflows
-- Comparison of CPU vs. GPU Performance
+[^footnote]: For the full list of supported TeX functions, check out the [KaTeX documentation](https://katex.org/docs/supported.html)
 
-![Github Traffic](/static/images/schrodinger_1.webp)
+Inline math symbols can be included by enclosing the term between the `$` symbol.
 
-### Darwin's Contributions
-- Integration of Darwin's Tools with Nextflow
-- Specific Features and Innovations
+Math code blocks are denoted by `$$`.
 
-### NVIDIA's Technological Edge
-- NVIDIA's GPU Technology in Genomics
-- Key Benefits and Efficiency Gains
+If you intend to use the `$` sign instead of math, you can escape it (`\$`), or specify the HTML entity (`&dollar;`) [^2]
 
-### Real-World Applications
-- Case Studies of Successful Implementations
-- Testimonials from Researchers and Institutions
+Inline or manually enumerated footnotes are also supported. Click on the links above to see them in action.
 
-### Cost and Time Savings
-- Analysis of Time Saved in Genomic Analysis
-- Financial Impacts of GPU-Accelerated Genomics
+[^2]: \$10 and &dollar;20.
 
-### Future Directions and Innovations
-- Upcoming Features and Enhancements
-- Long-Term Vision for Genomic Research
+# Deriving the OLS Estimator
 
-### Conclusion
-- Summary of Benefits
-- Final Thoughts on the Darwin and NVIDIA Partnership
+Using matrix notation, let $n$ denote the number of observations and $k$ denote the number of regressors.
 
+The vector of outcome variables $\mathbf{Y}$ is a $n \times 1$ matrix,
 
+```tex
+\mathbf{Y} = \left[\begin{array}
+  {c}
+  y_1 \\
+  . \\
+  . \\
+  . \\
+  y_n
+\end{array}\right]
+```
 
+$$
+\mathbf{Y} = \left[\begin{array}
+  {c}
+  y_1 \\
+  . \\
+  . \\
+  . \\
+  y_n
+\end{array}\right]
+$$
 
+The matrix of regressors $\mathbf{X}$ is a $n \times k$ matrix (or each row is a $k \times 1$ vector),
 
+```latex
+\mathbf{X} = \left[\begin{array}
+  {ccccc}
+  x_{11} & . & . & . & x_{1k} \\
+  . & . & . & . & .  \\
+  . & . & . & . & .  \\
+  . & . & . & . & .  \\
+  x_{n1} & . & . & . & x_{nn}
+\end{array}\right] =
+\left[\begin{array}
+  {c}
+  \mathbf{x}'_1 \\
+  . \\
+  . \\
+  . \\
+  \mathbf{x}'_n
+\end{array}\right]
+```
 
+$$
+\mathbf{X} = \left[\begin{array}
+  {ccccc}
+  x_{11} & . & . & . & x_{1k} \\
+  . & . & . & . & .  \\
+  . & . & . & . & .  \\
+  . & . & . & . & .  \\
+  x_{n1} & . & . & . & x_{nn}
+\end{array}\right] =
+\left[\begin{array}
+  {c}
+  \mathbf{x}'_1 \\
+  . \\
+  . \\
+  . \\
+  \mathbf{x}'_n
+\end{array}\right]
+$$
 
+The vector of error terms $\mathbf{U}$ is also a $n \times 1$ matrix.
+
+At times it might be easier to use vector notation. For consistency, I will use the bold small x to denote a vector and capital letters to denote a matrix. Single observations are denoted by the subscript.
+
+## Least Squares
+
+**Start**:  
+$$y_i = \mathbf{x}'_i \beta + u_i$$
+
+**Assumptions**:
+
+1. Linearity (given above)
+2. $E(\mathbf{U}|\mathbf{X}) = 0$ (conditional independence)
+3. rank($\mathbf{X}$) = $k$ (no multi-collinearity i.e. full rank)
+4. $Var(\mathbf{U}|\mathbf{X}) = \sigma^2 I_n$ (Homoskedascity)
+
+**Aim**:  
+Find $\beta$ that minimises the sum of squared errors:
+
+$$
+Q = \sum_{i=1}^{n}{u_i^2} = \sum_{i=1}^{n}{(y_i - \mathbf{x}'_i\beta)^2} = (Y-X\beta)'(Y-X\beta)
+$$
+
+**Solution**:  
+Hints: $Q$ is a $1 \times 1$ scalar, by symmetry $\frac{\partial b'Ab}{\partial b} = 2Ab$.
+
+Take matrix derivative w.r.t $\beta$:
+
+```tex
+\begin{aligned}
+  \min Q           & = \min_{\beta} \mathbf{Y}'\mathbf{Y} - 2\beta'\mathbf{X}'\mathbf{Y} +
+  \beta'\mathbf{X}'\mathbf{X}\beta \\
+                   & = \min_{\beta} - 2\beta'\mathbf{X}'\mathbf{Y} + \beta'\mathbf{X}'\mathbf{X}\beta \\
+  \text{[FOC]}~~~0 & =  - 2\mathbf{X}'\mathbf{Y} + 2\mathbf{X}'\mathbf{X}\hat{\beta}                  \\
+  \hat{\beta}      & = (\mathbf{X}'\mathbf{X})^{-1}\mathbf{X}'\mathbf{Y}                              \\
+                   & = (\sum^{n} \mathbf{x}_i \mathbf{x}'_i)^{-1} \sum^{n} \mathbf{x}_i y_i
+\end{aligned}
+```
+
+$$
+\begin{aligned}
+  \min Q           & = \min_{\beta} \mathbf{Y}'\mathbf{Y} - 2\beta'\mathbf{X}'\mathbf{Y} +
+  \beta'\mathbf{X}'\mathbf{X}\beta \\
+                   & = \min_{\beta} - 2\beta'\mathbf{X}'\mathbf{Y} + \beta'\mathbf{X}'\mathbf{X}\beta \\
+  \text{[FOC]}~~~0 & =  - 2\mathbf{X}'\mathbf{Y} + 2\mathbf{X}'\mathbf{X}\hat{\beta}                  \\
+  \hat{\beta}      & = (\mathbf{X}'\mathbf{X})^{-1}\mathbf{X}'\mathbf{Y}                              \\
+                   & = (\sum^{n} \mathbf{x}_i \mathbf{x}'_i)^{-1} \sum^{n} \mathbf{x}_i y_i
+\end{aligned}
+$$
