@@ -1,5 +1,5 @@
 ---
-title: Density Functional Theory (DFT) Functions Explained
+title: "Density Functional Theory (DFT) Functions Explained"
 date: '2024-04-04'
 tags: ['molecular-simulation', 'theory']
 draft: false
@@ -8,136 +8,82 @@ summary: 'Understanding the application of Density Functional Theory (DFT) in Da
 
 # Introduction
 
-Parsing and display of math equations is included in this blog template. Parsing of math is enabled by `remark-math` and `rehype-katex`.
-KaTeX and its associated font is included in `_document.js` so feel free to use it on any page.
-[^footnote]
+Density Functional Theory (DFT) is a fundamental computational approach used to investigate the electronic structure of molecules and materials. **DFT** calculates the properties of many-electron systems using functionals, meaning functions of another function, specifically the electron density. This article explores the basics of **DFT simulations**, its mathematical formulation, and how it is integrated into **Darwin's AI-based drug discovery** and material modeling workflows.
 
-[^footnote]: For the full list of supported TeX functions, check out the [KaTeX documentation](https://katex.org/docs/supported.html)
+# The Kohn-Sham Approach in DFT
 
-Inline math symbols can be included by enclosing the term between the `$` symbol.
+One of the key innovations in DFT is the **Kohn-Sham formulation**, which simplifies the complex many-body Schrödinger equation into a system of **non-interacting particles** under an effective potential. This reduces computational complexity while preserving accuracy in predicting material properties.
 
-Math code blocks are denoted by `$$`.
-
-If you intend to use the `$` sign instead of math, you can escape it (`\$`), or specify the HTML entity (`&dollar;`) [^2]
-
-Inline or manually enumerated footnotes are also supported. Click on the links above to see them in action.
-
-[^2]: \$10 and &dollar;20.
-
-# Deriving the OLS Estimator
-
-Using matrix notation, let $n$ denote the number of observations and $k$ denote the number of regressors.
-
-The vector of outcome variables $\mathbf{Y}$ is a $n \times 1$ matrix,
-
-```tex
-\mathbf{Y} = \left[\begin{array}
-  {c}
-  y_1 \\
-  . \\
-  . \\
-  . \\
-  y_n
-\end{array}\right]
-```
+The **Kohn-Sham equations** are given as:
 
 $$
-\mathbf{Y} = \left[\begin{array}
-  {c}
-  y_1 \\
-  . \\
-  . \\
-  . \\
-  y_n
-\end{array}\right]
+\left[ -\frac{\hbar^2}{2m} \nabla^2 + V_{\text{eff}}[\rho(\mathbf{r})] \right] \psi_i(\mathbf{r}) = \epsilon_i \psi_i(\mathbf{r})
 $$
 
-The matrix of regressors $\mathbf{X}$ is a $n \times k$ matrix (or each row is a $k \times 1$ vector),
+where:
+- $\rho(\mathbf{r})$ is the **electron density**,
+- $V_{\text{eff}}$ is the **effective potential**,
+- $\psi_i$ are the Kohn-Sham orbitals, and
+- $\epsilon_i$ are the corresponding eigenvalues (energy levels).
 
-```latex
-\mathbf{X} = \left[\begin{array}
-  {ccccc}
-  x_{11} & . & . & . & x_{1k} \\
-  . & . & . & . & .  \\
-  . & . & . & . & .  \\
-  . & . & . & . & .  \\
-  x_{n1} & . & . & . & x_{nn}
-\end{array}\right] =
-\left[\begin{array}
-  {c}
-  \mathbf{x}'_1 \\
-  . \\
-  . \\
-  . \\
-  \mathbf{x}'_n
-\end{array}\right]
-```
+The electron density $\rho(\mathbf{r})$ is obtained as a sum over the Kohn-Sham orbitals:
 
 $$
-\mathbf{X} = \left[\begin{array}
-  {ccccc}
-  x_{11} & . & . & . & x_{1k} \\
-  . & . & . & . & .  \\
-  . & . & . & . & .  \\
-  . & . & . & . & .  \\
-  x_{n1} & . & . & . & x_{nn}
-\end{array}\right] =
-\left[\begin{array}
-  {c}
-  \mathbf{x}'_1 \\
-  . \\
-  . \\
-  . \\
-  \mathbf{x}'_n
-\end{array}\right]
+\rho(\mathbf{r}) = \sum_i^{\text{occ}} |\psi_i(\mathbf{r})|^2
 $$
 
-The vector of error terms $\mathbf{U}$ is also a $n \times 1$ matrix.
+This formulation allows Darwin’s software to compute the electronic structure of drug molecules or materials while maintaining computational efficiency.
 
-At times it might be easier to use vector notation. For consistency, I will use the bold small x to denote a vector and capital letters to denote a matrix. Single observations are denoted by the subscript.
+# Exchange-Correlation Functionals
 
-## Least Squares
+The most challenging part of DFT is the **exchange-correlation functional**, $E_{xc}[\rho(\mathbf{r})]$, which accounts for the complex quantum interactions between electrons. Different **approximation methods** are used to model this term:
 
-**Start**:  
-$$y_i = \mathbf{x}'_i \beta + u_i$$
+1. **Local Density Approximation (LDA)**: 
+   - Assumes that the exchange-correlation energy is a local function of the electron density.
+   - Good for systems with uniform electron distribution but limited for strongly inhomogeneous systems.
 
-**Assumptions**:
+2. **Generalized Gradient Approximation (GGA)**:
+   - Incorporates both the electron density $\rho(\mathbf{r})$ and its gradient $\nabla \rho(\mathbf{r})$.
+   - Provides better accuracy for molecular and material systems where electron density is not uniform.
 
-1. Linearity (given above)
-2. $E(\mathbf{U}|\mathbf{X}) = 0$ (conditional independence)
-3. rank($\mathbf{X}$) = $k$ (no multi-collinearity i.e. full rank)
-4. $Var(\mathbf{U}|\mathbf{X}) = \sigma^2 I_n$ (Homoskedascity)
+Darwin uses **hybrid functionals**, a mix of **DFT** and **Hartree-Fock** methods, for increased accuracy in molecular simulations.
 
-**Aim**:  
-Find $\beta$ that minimises the sum of squared errors:
+# Self-Consistent Field (SCF) Method
+
+To solve the Kohn-Sham equations, DFT employs the **Self-Consistent Field (SCF)** method. The steps include:
+1. **Initial Guess**: Start with an initial guess for the electron density $\rho(\mathbf{r})$.
+2. **Solve Kohn-Sham Equations**: Solve for the Kohn-Sham orbitals $\psi_i(\mathbf{r})$ and eigenvalues $\epsilon_i$ using the current effective potential $V_{\text{eff}}$.
+3. **Update Electron Density**: Update $\rho(\mathbf{r})$ based on the new $\psi_i(\mathbf{r})$.
+4. **Repeat Until Convergence**: Iterate until the difference between successive electron densities falls below a predefined threshold.
+
+This iterative method ensures the accuracy of computed properties like **binding energies**, **charge densities**, and **reaction pathways**.
+
+# Applications of DFT in Drug Discovery and Materials Modeling
+
+In **Darwin’s software**, DFT plays a crucial role in the **molecular modeling** of drug candidates, predicting how small molecules bind to protein targets. For example:
+
+- **Alzheimer's drug discovery**: By modeling interactions between candidate drugs and amyloid-beta plaques, DFT helps refine binding affinities at the quantum level.
+  
+- **Parkinson's treatment development**: DFT simulations are used to study how pre-approved dopamine agonists interact with alpha-synuclein aggregates, helping optimize drug formulations.
+
+In addition, DFT is used in **material science** within Darwin to predict the properties of **catalysts**, **polymers**, and other materials critical to biotechnology and energy solutions.
+
+# Example: Calculating Binding Energy
+
+To demonstrate DFT's utility, consider the calculation of **binding energy** between a drug and its target protein. The total binding energy, $E_{\text{binding}}$, is calculated as:
 
 $$
-Q = \sum_{i=1}^{n}{u_i^2} = \sum_{i=1}^{n}{(y_i - \mathbf{x}'_i\beta)^2} = (Y-X\beta)'(Y-X\beta)
+E_{\text{binding}} = E_{\text{complex}} - (E_{\text{protein}} + E_{\text{drug}})
 $$
 
-**Solution**:  
-Hints: $Q$ is a $1 \times 1$ scalar, by symmetry $\frac{\partial b'Ab}{\partial b} = 2Ab$.
+where:
+- $E_{\text{complex}}$ is the total energy of the drug-protein complex,
+- $E_{\text{protein}}$ is the energy of the isolated protein, and
+- $E_{\text{drug}}$ is the energy of the isolated drug.
 
-Take matrix derivative w.r.t $\beta$:
+DFT's accuracy in calculating these energies at the **quantum level** allows Darwin to make precise predictions about which drug candidates are most likely to succeed in clinical trials.
 
-```tex
-\begin{aligned}
-  \min Q           & = \min_{\beta} \mathbf{Y}'\mathbf{Y} - 2\beta'\mathbf{X}'\mathbf{Y} +
-  \beta'\mathbf{X}'\mathbf{X}\beta \\
-                   & = \min_{\beta} - 2\beta'\mathbf{X}'\mathbf{Y} + \beta'\mathbf{X}'\mathbf{X}\beta \\
-  \text{[FOC]}~~~0 & =  - 2\mathbf{X}'\mathbf{Y} + 2\mathbf{X}'\mathbf{X}\hat{\beta}                  \\
-  \hat{\beta}      & = (\mathbf{X}'\mathbf{X})^{-1}\mathbf{X}'\mathbf{Y}                              \\
-                   & = (\sum^{n} \mathbf{x}_i \mathbf{x}'_i)^{-1} \sum^{n} \mathbf{x}_i y_i
-\end{aligned}
-```
+# Conclusion
 
-$$
-\begin{aligned}
-  \min Q           & = \min_{\beta} \mathbf{Y}'\mathbf{Y} - 2\beta'\mathbf{X}'\mathbf{Y} +
-  \beta'\mathbf{X}'\mathbf{X}\beta \\
-                   & = \min_{\beta} - 2\beta'\mathbf{X}'\mathbf{Y} + \beta'\mathbf{X}'\mathbf{X}\beta \\
-  \text{[FOC]}~~~0 & =  - 2\mathbf{X}'\mathbf{Y} + 2\mathbf{X}'\mathbf{X}\hat{\beta}                  \\
-  \hat{\beta}      & = (\mathbf{X}'\mathbf{X})^{-1}\mathbf{X}'\mathbf{Y}                              \\
-                   & = (\sum^{n} \mathbf{x}_i \mathbf{x}'_i)^{-1} \sum^{n} \mathbf{x}_i y_i
-\end{aligned}
-$$
+**Density Functional Theory (DFT)** is an essential tool in **Darwin's AI-driven platform**, providing quantum-level accuracy for **molecular and material simulations**. By solving the **Kohn-Sham equations** and leveraging advanced exchange-correlation functionals, DFT allows for the precise calculation of **binding affinities**, **reaction pathways**, and material properties, making it a cornerstone in the fields of **drug discovery** and **biotechnology**.
+
