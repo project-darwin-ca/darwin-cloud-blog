@@ -12,7 +12,7 @@ import ScrollTopAndComment from '@/components/ScrollTopAndComment'
 
 const editUrl = (path) => `${siteMetadata.siteRepo}/blob/main/data/${path}`
 const discussUrl = (path) =>
-  `https://x.com/orbitskyhq`
+  `https://x.com/DarwinCloud_`
 
 const postDateTemplate: Intl.DateTimeFormatOptions = {
   weekday: 'long',
